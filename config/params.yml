@@ -1,0 +1,60 @@
+publish_mode: "copy"
+
+# workflow parameters
+
+# run preprocessing/qc workflow
+# alternative parameter: skip_preprocessing
+run_preprocessing: true
+
+# run host-decontamination subworkflow
+remove_host: false
+
+# ignore orphan reads after qc
+# vknight: true
+# nevermore: false
+# alternative parameter: keep_orphans
+drop_orphans: false
+
+
+skip_alignment: true
+run_metaphlan3: false 
+
+# qc parameters
+# (also refer to: https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbduk-guide/)
+
+# minimum read length [bp]
+# NGLess functional profiling: 45
+# 16S GAGA2: 100
+qc_minlen: 45
+
+# bbduk wgs
+# qtrim=rl trimq=3 : gentle quality trimming (only discard bases < phred 3; phred 2 = junk marker) on either side (rl) of the read
+# maq=25 : discard reads below average quality of pred 25
+# ref=?? ktrim=r k=23 mink=11 hdist=1 tpe tbo : right-side k-mer based adapter clipping with 1 mismatch allowed, try overlap-detection (tbo), and trim pairs to same length (tpe) upon adapter detection -- NOTE: ref-parameter is set within workflow
+# ftm=5 : get rid of (n*5)+1st base (last sequencing cycle illumina garbage) -- NOTE: unset for preprocessed data
+# entropy=0.5 entropywindow=50 entropyk=5 : discard low complexity sequences
+# qc_params_shotgun: "qtrim=rl trimq=3 maq=21 ktrim=r k=23 mink=11 hdist=1 ftm=5 entropy=0.5 entropywindow=50 entropyk=5 tpe tbo"
+# METAPHLAN/SAMESTR-SPECIFIC PARAMETER SETTING
+qc_params_shotgun: "qtrim=rl trimq=21 ktrim=r k=23 mlf=0.5 mink=11 hdist=1 entropy=0.5 entropywindow=50 entropyk=5 tpe tbo"
+
+
+
+
+# profiling parameters
+
+# run profiling?
+skip_profiling: false
+
+# metaphlan4 database
+mp4_db: "/scratch/schudoma/databases/metaphlan4/mpa_vJun23_CHOCOPhlAnSGB_202307"
+# mp4_pkl: "/scratch/schudoma/databases/metaphlan4/mpa_vOct22_CHOCOPhlAnSGB_202212/mpa_vOct22_CHOCOPhlAnSGB_202212.pkl"
+
+samestr_compatible_output: true
+mp4_save_alignment: false
+mp4_collate: false
+
+run_samestr: true
+
+samestr_marker_db: "/scratch/schudoma/databases/samestr/mpa_vJun23_CHOCOPhlAnSGB_202307_SameStr/"
+
+run_qa: false
